@@ -1,0 +1,9 @@
+tensorflow
+numpy
+nltk
+Flask
+Flask-Cors
+waitress  # <-- Isko add karein
+python-dotenv
+uuid
+pickle

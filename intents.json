@@ -1,0 +1,262 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["Hi", "Hey", "How are you", "Is anyone there?", "Hello", "Good day", "Namaste", "Start", "Help me" , "hii", "hey", "hello", "how are you","Who are you"],
+      "responses": ["Hello! Welcome to Fix Mantra. How can I help you with your appliance or gadget repair today?", "Hi there! How can I assist you with your repair needs?"]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "See you later", "Goodbye", "That's all for now", "Exit", "Quit", "Okay done"],
+      "responses": ["See you later, thanks for visiting!", "Have a great day!", "Bye! Feel free to reach out anytime."]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["Thank you", "Thanks a lot", "Thanks", "That was helpful", "appreciated"],
+      "responses": ["You're welcome!", "Happy to help!", "Anytime! Is there anything else I can assist with?"]
+    },
+    {
+      "tag": "about",
+      "patterns": ["Who are you", "What is your name", "What is Fix Mantra", "Tell me about your company", "What do you do"],
+      "responses": ["We are Fix Mantra, your trusted partner for simple, fast, and reliable repair solutions for all types of home appliances and gadgets!", "Fix Mantra is a service that repairs home appliances and electronic gadgets, right from your doorstep."]
+    },
+    {
+      "tag": "provide_name",
+      "patterns": ["My name is", "I am", "You can call me", "This is"],
+      "responses": ["Got it! Nice to meet you. How can I help you further?"]
+    },
+    {
+      "tag": "recall_name",
+      "patterns": ["What is my name", "Do you know my name", "Who am I"],
+      "responses": ["Your name is {name}.", "You told me your name is {name}."]
+    },
+   {
+      "tag": "recall_email",
+      "patterns": ["What is my email", "Do you know my email", "Who my email"],
+      "responses": ["Your name is {emai}.", "You told me your email is {email}."]
+    },
+    {
+      "tag": "services_general",
+      "patterns": ["What services do you provide?", "What can you fix?", "What do you repair?", "List your services", "What kind of work do you do?"],
+      "responses": ["We offer repair and maintenance for all major home appliances and gadgets — including ACs, refrigerators, washing machines, TVs, laptops, and mobile phones."]
+    },
+    {
+      "tag": "booking",
+      "patterns": ["How can I book a repair?", "How do I schedule a service?", "I want to book a service", "Schedule a pickup", "I need a repair", "Make a booking"],
+      "responses": ["Absolutely! To proceed with the booking, could you please provide your email address?"],
+      "context_set": "awaiting_email"
+    },
+    {
+      "tag": "capture_email",
+      "patterns": ["my email is", "here is my email", "@", ".com", ".in", "email"],
+      "responses": ["Thank you! We've received your request. A confirmation will be sent to your email: {email}."],
+      "context_filter": "awaiting_emails"
+    },
+    {
+      "tag": "pricing_general",
+      "patterns": ["How much does it cost?", "What are the prices?", "Pricing", "Cost of repair", "What are your rates?", "Charges"],
+      "responses": ["We offer transparent and affordable pricing. Mobile repairs start at ₹499 and Home Appliance repairs start at ₹799. We also have an Annual Protection Plan. Which one would you like to know more about?"]
+    },
+    {
+      "tag": "process",
+      "patterns": ["How does it work?", "What is the process?", "Explain your workflow", "What are the steps?"],
+      "responses": ["Our process is simple! 1. You book a service request online. 2. We pick up your device from your doorstep. 3. Our experts repair it with care and deliver it back to you."]
+    },
+    {
+      "tag": "warranty",
+      "patterns": ["Do you have a warranty?", "What is the warranty period?", "guarantee on repairs", "Is there a service guarantee?"],
+      "responses": ["Yes, we provide a 90-day service warranty on all our repairs for your peace of mind. Our Annual Protection Plan offers an extended 6-month warranty on each repair."]
+    },
+     {
+      "tag": "services",
+      "patterns": ["What services do you provide?", "What can you fix?"],
+      "responses": ["We repair all major home appliances and gadgets, including mobiles, laptops, ACs, refrigerators, and washing machines."]
+    },
+    
+    {
+      "tag": "booking_start",
+      "patterns": ["I want to book a service", "Schedule a repair", "Book a technician", "I need a repair"],
+      "responses": ["Great! I can help with that. To start, could you please tell me your full name?"],
+      "context_set": "awaiting_name"
+    },
+    {
+      "tag": "capture_name",
+      "patterns": [], 
+      "responses": ["Thank you, {name}. What is your 10-digit mobile number?"],
+      "context_filter": "awaiting_name",
+      "context_set": "awaiting_phone"
+    },
+    {
+      "tag": "capture_phone",
+      "patterns": [],
+      "responses": ["Got it. Now, please provide your full address for the service or pickup."],
+      "context_filter": "awaiting_phone",
+      "context_set": "awaiting_address"
+    },
+    {
+      "tag": "capture_address",
+      "patterns": [],
+      "responses": ["Thanks for the address. Which device needs repair? (e.g., Mobile Phone, AC, Laptop)"],
+      "context_filter": "awaiting_address",
+      "context_set": "awaiting_device"
+    },
+    {
+      "tag": "capture_device",
+      "patterns": [],
+      "responses": ["Okay, a {device}. And briefly, what is the main problem you're facing?"],
+      "context_filter": "awaiting_device",
+      "context_set": "awaiting_problem"
+    },
+    {
+      "tag": "capture_problem",
+      "patterns": [],
+      "responses": ["Alright, let's confirm everything. \nName: {name}\nPhone: {phone}\nAddress: {address}\nDevice: {device}\nProblem: {problem}\n\nIs all this information correct (Yes/No)?"],
+      "context_filter": "awaiting_problem",
+      "context_set": "awaiting_confirmation"
+    },
+    {
+      "tag": "booking_confirm_yes",
+      "patterns": ["Yes", "Correct", "Confirm", "Yup", "Sounds good"],
+      "responses": ["Excellent! Your service request has been booked successfully. You will receive a confirmation SMS shortly. Thank you for choosing Fix Mantra!"],
+      "context_filter": "awaiting_confirmation"
+    },
+    {
+      "tag": "booking_confirm_no",
+      "patterns": ["No", "Incorrect", "Wrong", "Change something"],
+      "responses": ["My apologies for the error. Let's start over to make sure we get it right. What is your full name?"],
+      "context_filter": "awaiting_confirmation",
+      "context_set": "awaiting_name"
+    },
+    {
+      "tag": "service_areas",
+      "patterns": ["Where do you provide service?", "Are you in my city?", "Do you operate in Delhi?", "Service locations", "pincode check"],
+      "responses": ["We are currently operating in major metropolitan areas. Could you please tell me your city and pincode so I can check for service availability?"]
+    },
+    {
+      "tag": "payment_methods",
+      "patterns": ["How can I pay?", "What are the payment options?", "Do you accept UPI?", "Cash on delivery?", "payment mode"],
+      "responses": ["We accept various payment methods including UPI, Credit/Debit Cards, Net Banking, and Cash on Delivery after the service is completed."]
+    },
+
+    {
+      "tag": "mobile_repair",
+      "patterns": ["Can you fix my phone?", "Mobile repair", "My phone is broken", "I need gadget repair", "Smartphone service"],
+      "responses": ["Yes, we repair all major brands of mobile phones. What seems to be the issue? Common problems we fix include screen replacement, battery issues, and charging port problems. Mobile repairs start at just ₹499."]
+    },
+    {
+      "tag": "mobile_screen_issue",
+      "patterns": ["My phone screen is cracked", "Screen replacement", "Display is broken", "touch is not working", "lines on screen"],
+      "responses": ["We can definitely help with a screen replacement. To give you an accurate price, could you please tell me the brand and model of your phone?"]
+    },
+    {
+      "tag": "mobile_battery_issue",
+      "patterns": ["My phone battery drains fast", "Battery replacement", "Phone is not charging properly", "phone getting hot", "battery swelling"],
+      "responses": ["Battery issues are very common. We can replace it with a genuine part. What is the brand and model of your phone?"]
+    },
+    {
+      "tag": "mobile_water_damage",
+      "patterns": ["phone fell in water", "water damage repair", "my phone is wet", "liquid damage"],
+      "responses": ["Water damage can be serious. Please do not try to switch it on. We can diagnose the extent of the damage and suggest the best course of action. Please book a pickup immediately."]
+    },
+    {
+      "tag": "laptop_repair",
+      "patterns": ["My laptop is not working", "Laptop service", "Can you fix laptops?", "My laptop is slow", "keyboard not working"],
+      "responses": ["Yes, we service laptops from all major brands. Whether it's a broken screen, keyboard issue, software problems, or it's running slow, our technicians can help."]
+    },
+    {
+      "tag": "ac_repair",
+      "patterns": ["AC is not cooling", "AC service needed", "My air conditioner is broken", "AC making noise", "gas leak in AC"],
+      "responses": ["We can certainly help with your AC. Our expert technicians handle servicing, repairs, and gas refilling. Would you like to book an on-site visit?"]
+    },
+    {
+      "tag": "fridge_repair",
+      "patterns": ["My fridge is not cooling", "Refrigerator repair", "Freezer is not working", "fridge making loud noise", "ice building up"],
+      "responses": ["A non-cooling refrigerator needs immediate attention. Our technicians are experts in fridge repairs. We can schedule a visit for you."]
+    },
+    {
+      "tag": "washing_machine_repair",
+      "patterns": ["Washing machine is not spinning", "My washing machine is leaking", "Washing machine repair", "not draining water", "error code on display"],
+      "responses": ["We understand how important a washing machine is. We repair all types, including top-load, front-load, and semi-automatic machines. Let's get that fixed for you."]
+    },
+    {
+      "tag": "tv_repair",
+      "patterns": ["TV not turning on", "my television is broken", "no picture on TV", "lines on TV screen"],
+      "responses": ["We repair all kinds of TVs, including LED, LCD, and Smart TVs. Tell me the brand and size of your TV, and the problem you are facing."]
+    },
+
+    {
+        "tag": "brand_repair",
+        "patterns": ["Do you fix Apple products?", "Can you repair my Samsung phone?", "LG washing machine service", "Dell laptop repair"],
+        "responses": ["Yes, our technicians are trained to repair devices from all major brands including Apple, Samsung, LG, Dell, HP, and many more. What device do you need help with?"]
+    },
+
+    {
+        "tag": "pricing_estimate",
+        "patterns": ["Can I get a price estimate?", "How much for a screen replacement on iPhone 12?", "What is the inspection charge?"],
+        "responses": ["For most standard repairs, we have fixed pricing. For complex issues, our technician will provide a detailed estimate after diagnosing the device. There is a nominal inspection charge if you choose not to go ahead with the repair."]
+    },
+    {
+        "tag": "hidden_charges",
+        "patterns": ["Are there any hidden charges?", "Is the final price same as estimate?", "extra costs"],
+        "responses": ["We believe in 100% transparent pricing. The price our technician quotes is the final price you pay. There are absolutely no hidden charges."]
+    },
+
+    {
+      "tag": "repair_duration",
+      "patterns": ["How long will it take to repair?", "When will I get my device back?", "Repair time", "turnaround time"],
+      "responses": ["The repair time depends on the issue and parts availability. For most mobile repairs, we offer same-day or next-day delivery. For home appliances, our technician will give you an estimate during the visit."]
+    },
+    {
+      "tag": "genuine_parts",
+      "patterns": ["Do you use original parts?", "Are the spare parts genuine?", "Quality of parts", "OEM parts"],
+      "responses": ["Absolutely. We always use high-quality, genuine spare parts for our repairs to ensure the best performance and longevity for your device. It's part of our promise to you."]
+    },
+    {
+      "tag": "track_repair",
+      "patterns": ["Where is my device?", "Can I track my repair?", "What is the status of my service request?", "track my order"],
+      "responses": ["Yes, you can track your repair status through our website or app using your service request ID. You will also receive regular updates via SMS and email."]
+    },
+    {
+      "tag": "technicians_info",
+      "patterns": ["Who are your technicians?", "Are your experts certified?", "Tell me about your staff", "technician id card"],
+      "responses": ["Our technicians are certified, background-verified, and experienced professionals. For your safety, they will always carry a Fix Mantra ID card."]
+    },
+    {
+      "tag": "cancellation_policy",
+      "patterns": ["Can I cancel my booking?", "How to cancel a service request?", "refund policy"],
+      "responses": ["Yes, you can cancel your booking. For our detailed cancellation and refund policy, please refer to the terms and conditions on our website."]
+    },
+    {
+      "tag": "data_privacy",
+      "patterns": ["Is my data safe?", "What about my photos on my phone?", "Data privacy policy"],
+      "responses": ["We take your data privacy very seriously. Our technicians follow strict protocols to ensure the safety and confidentiality of your personal data during repairs."]
+    },
+    
+    {
+        "tag": "annual_plan_info",
+        "patterns": ["What is the annual protection plan?", "Tell me about your annual plan", "What is included in 1499 plan?", "benefits of annual plan"],
+        "responses": ["Our Annual Protection Plan for ₹1499/year is designed for complete peace of mind. It includes unlimited service requests, free pickup & delivery, an extended 6-month warranty on each repair, priority support, and exclusive discounts on spare parts."]
+    },
+
+    {
+      "tag": "human_check",
+      "patterns": ["Are you a bot?", "Are you a human?", "Am I talking to a robot?"],
+      "responses": ["I am an AI assistant, designed to help you with Fix Mantra's services. How can I assist you?", "I'm a bot, but I'm a smart one! I'm here to help."]
+    },
+    {
+      "tag": "joke",
+      "patterns": ["Tell me a joke", "Make me laugh", "Are you funny?"],
+      "responses": ["Why don't scientists trust atoms? Because they make up everything!", "What do you call a fake noodle? An Impasta!"]
+    },
+    {
+      "tag": "bot_insult",
+      "patterns": ["You are stupid", "You are useless", "Bad bot", "you don't understand"],
+      "responses": ["I apologize if I wasn't helpful. I am still learning. Could you please rephrase your question so I can try to understand better?", "I'm sorry you feel that way. I'll do my best to improve."]
+    },
+    {
+        "tag": "compliment",
+        "patterns": ["You are smart", "Good bot", "you are helpful", "great service"],
+        "responses": ["Thank you! I'm happy I could help.", "That's great to hear! How else can I assist you?"]
+    }
+  ]
+}
