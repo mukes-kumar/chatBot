@@ -1,9 +1,7 @@
-tensorflow
-numpy
-nltk
-Flask
-Flask-Cors
-waitress  # <-- Isko add karein
-python-dotenv
-uuid
-pickle
+Flask==2.3.2
+Flask-Cors==4.0.0
+numpy==1.24.3
+nltk==3.8.1
+tensorflow==2.15.0
+waitress==2.1.2
+python-dotenv==1.0.0
