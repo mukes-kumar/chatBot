@@ -68,7 +68,8 @@ cd fixmantra-chatbot
 4. Install Required Python Libraries:  pip install -r requirements.txt
 5. Train the AI Model:  python train.py
 6. Run the Backend Server: python app.py
-   ##Running Server Port: 8080
- ##view server 
+
+## ** Running Server Port: 8080 **
+## ** view server **
 <img width="1631" height="941" alt="image" src="https://github.com/user-attachments/assets/619272c4-65d3-481a-b074-a3f13e7756ae" />
 
