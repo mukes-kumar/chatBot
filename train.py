@@ -9,21 +9,17 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import SGD
 
-# Download necessary NLTK data
-nltk.download('punkt')
-nltk.download('wordnet')
-# Some NLTK installations expect additional punkt variants; ensure they're present
-try:
-    nltk.download('punkt_tab')
-except Exception:
-    # If the downloader doesn't know 'punkt_tab', ignore and continue
-    pass
+# --- START OF CHANGES ---
 
-# Optionally download the Open Multilingual Wordnet data used by some lemmatizers
-try:
-    nltk.download('omw-1.4')
-except Exception:
-    pass
+# Download necessary NLTK data in a clean way
+print("Downloading NLTK models (punkt, wordnet, omw-1.4)...")
+nltk.download('punkt', quiet=True)
+nltk.download('wordnet', quiet=True)
+nltk.download('omw-1.4', quiet=True)
+print("NLTK models downloaded successfully.")
+
+# --- END OF CHANGES ---
+
 
 lemmatizer = WordNetLemmatizer()
 
@@ -39,17 +35,8 @@ ignore_letters = ['?', '!', '.', ',']
 # Process each intent and its patterns
 for intent in intents['intents']:
     for pattern in intent['patterns']:
-        # Tokenize words - split sentence into words. If the punkt/punkt_tab
-        # tokenizer is missing, attempt to download it and retry once.
-        try:
-            word_list = nltk.word_tokenize(pattern)
-        except LookupError:
-            nltk.download('punkt')
-            try:
-                nltk.download('punkt_tab')
-            except Exception:
-                pass
-            word_list = nltk.word_tokenize(pattern)
+        # Tokenize words - split sentence into words
+        word_list = nltk.word_tokenize(pattern)
         words.extend(word_list)
         documents.append((word_list, intent['tag']))
         # Add the tag to the classes list if not already there
@@ -101,8 +88,10 @@ sgd = SGD(learning_rate=0.01, momentum=0.9, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
 # Train the model
+print("Starting model training...")
 model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
+print("Model training finished.")
 
 # Save the trained model
 model.save('chatbot_model.h5')
-print("Done! Model is trained and saved.")
+print("Done! Model is trained and saved as chatbot_model.h5")
