@@ -69,23 +69,6 @@ cd fixmantra-chatbot
 5. Train the AI Model:  python train.py
 6. Run the Backend Server: python app.py
    ##Running Server Port: 8080
+ ##view server 
+<img width="1631" height="941" alt="image" src="https://github.com/user-attachments/assets/619272c4-65d3-481a-b074-a3f13e7756ae" />
 
-
-
-   ├── backend/
-│   ├── .venv/                # The isolated Python virtual environment (ignored by Git)
-│   ├── app.py                # The main Flask application, contains API logic.
-│   ├── train.py              # Script to train the AI model.
-│   ├── intents.json          # The chatbot's knowledge base (patterns and responses).
-│   ├── requirements.txt      # List of all Python dependencies.
-│   ├── chatbot_model.h5      # The trained and saved Neural Network model.
-│   ├── words.pkl             # Saved vocabulary list for the model.
-│   └── classes.pkl           # Saved intent categories for the model.
-│
-└── frontend/
-    ├── src/
-    │   └── components/
-    │       └── Chatbot/
-    │           └── Chatbot.js    # The main React component for the chat UI.
-    ├── package.json          # List of all JavaScript dependencies.
-    └── ...
