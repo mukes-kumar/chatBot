@@ -128,18 +128,29 @@ def get_response(intents_list, intents_json, session_id, user_message):
     return result
 
 
-# --- NEW: Add a Welcome Route for the Browser ---
+# ... (all your existing imports: json, pickle, Flask, etc.)
+# ... (your CORS setup, model loading, and all other functions remain the same)
+
+
+# --- NEW, UPGRADED WELCOME & CHAT UI ROUTE ---
 @app.route("/", methods=["GET"])
 def welcome():
-    # We will return a beautiful HTML response
+    # This HTML now includes a welcome screen, the chat UI, and advanced CSS/JS for animations and responsiveness.
     html_content = f"""
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Fix Mantra Chatbot API</title>
+        <title>Flex Mitra AI Assistant</title>
         <style>
+            /* --- General Styles --- */
+            :root {{
+                --primary-color: #1a73e8;
+                --user-message-color: #1a73e8;
+                --bot-message-color: #e9e9eb;
+                --background-color: #f0f2f5;
+            }}
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
                 display: flex;
@@ -147,64 +158,238 @@ def welcome():
                 align-items: center;
                 height: 100vh;
                 margin: 0;
-                background-color: #f0f2f5;
-                color: #333;
+                background-color: var(--background-color);
+                overflow: hidden; /* Prevents scrollbars on the body */
             }}
-            .container {{
+
+            /* --- Welcome Screen Styles --- */
+            .welcome-screen {{
                 text-align: center;
-                padding: 40px;
-                background-color: white;
-                border-radius: 12px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                transition: opacity 0.5s ease-out;
             }}
-            h1 {{
-                color: #1a73e8;
-                font-size: 2.5em;
-                margin-bottom: 10px;
+            .welcome-screen.hidden {{
+                opacity: 0;
+                pointer-events: none;
             }}
-            p {{
-                font-size: 1.2em;
-                margin-top: 0;
-            }}
-            .status {{
-                display: inline-flex;
-                align-items: center;
-                font-size: 1.1em;
-                background-color: #e6f4ea;
-                color: #34a853;
-                padding: 10px 20px;
-                border-radius: 20px;
-                font-weight: 500;
-            }}
-            .status-dot {{
-                height: 12px;
-                width: 12px;
-                background-color: #34a853;
+            .welcome-logo {{
+                width: 100px;
+                height: 100px;
+                background-color: var(--primary-color);
                 border-radius: 50%;
-                display: inline-block;
-                margin-right: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 48px;
+                font-weight: bold;
                 animation: pulse 2s infinite;
+                margin: 0 auto 20px auto;
             }}
+            .welcome-screen h1 {{
+                color: #333;
+                font-size: 1.8em;
+            }}
+
+            /* --- Chat UI Styles --- */
+            .chat-container {{
+                width: 480px;
+                height: 550px;
+                background-color: white;
+                border-radius: 15px;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                position: absolute; /* Allows it to be layered on top */
+                transition: opacity 0.5s ease-in, transform 0.5s ease-in;
+            }}
+            .chat-container.hidden {{
+                opacity: 0;
+                transform: scale(0.95);
+                pointer-events: none;
+            }}
+            .chat-header {{
+                background-color: var(--primary-color);
+                color: white;
+                padding: 15px;
+                text-align: center;
+                font-size: 1.2em;
+                font-weight: 500;
+                flex-shrink: 0;
+            }}
+            .message-area {{
+                flex-grow: 1;
+                padding: 15px;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }}
+            .chat-message {{
+                padding: 10px 15px;
+                border-radius: 18px;
+                margin-bottom: 10px;
+                max-width: 80%;
+                word-wrap: break-word;
+                animation: slideUpFadeIn 0.4s ease-out;
+            }}
+            .user-message {{
+                background-color: var(--user-message-color);
+                color: white;
+                align-self: flex-end;
+            }}
+            .bot-message {{
+                background-color: var(--bot-message-color);
+                color: #333;
+                align-self: flex-start;
+            }}
+            .chat-input-form {{
+                display: flex;
+                padding: 10px;
+                border-top: 1px solid #ddd;
+                background-color: #fff;
+                flex-shrink: 0;
+            }}
+            .chat-input-form input {{
+                flex-grow: 1; border: 1px solid #ccc; border-radius: 20px;
+                padding: 10px 15px; font-size: 1em; margin-right: 10px;
+            }}
+            .chat-input-form button {{
+                background-color: var(--primary-color); color: white; border: none;
+                border-radius: 20px; padding: 10px 20px; font-size: 1em; cursor: pointer;
+            }}
+            .typing-indicator {{
+                align-self: flex-start; display: flex; align-items: center; padding: 10px 15px;
+            }}
+            .typing-indicator span {{
+                height: 8px; width: 8px; margin: 0 2px;
+                background-color: #a0a0a0; border-radius: 50%;
+                display: inline-block; animation: typing-pulse 1.4s infinite ease-in-out both;
+            }}
+            .typing-indicator span:nth-child(1) {{ animation-delay: -0.32s; }}
+            .typing-indicator span:nth-child(2) {{ animation-delay: -0.16s; }}
+            
+            /* --- Animations --- */
             @keyframes pulse {{
-                0% {{ transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7); }}
-                70% {{ transform: scale(1); box-shadow: 0 0 0 10px rgba(52, 168, 83, 0); }}
-                100% {{ transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 168, 83, 0); }}
+                0% {{ transform: scale(0.95); box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.7); }}
+                70% {{ transform: scale(1); box-shadow: 0 0 0 10px rgba(26, 115, 232, 0); }}
+                100% {{ transform: scale(0.95); box-shadow: 0 0 0 0 rgba(26, 115, 232, 0); }}
+            }}
+            @keyframes slideUpFadeIn {{
+                from {{ opacity: 0; transform: translateY(10px); }}
+                to {{ opacity: 1; transform: translateY(0); }}
+            }}
+            @keyframes typing-pulse {{ 0%, 80%, 100% {{ transform: scale(0); }} 40% {{ transform: scale(1.0); }} }}
+
+            /* --- Responsive Design for Mobile --- */
+            @media (max-width: 500px) {{
+                .chat-container {{
+                    width: 100vw;
+                    height: 100vh;
+                    border-radius: 0;
+                    box-shadow: none;
+                }}
             }}
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>Fix Mantra Chatbot API</h1>
-            <p>The AI brain is up and running!</p>
-            <div class="status">
-                <span class="status-dot"></span>
-                <span>Server is Online</span>
-            </div>
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcome-screen">
+            <div class="welcome-logo">FM</div>
+            <h1>Welcome to Flex Mitra</h1>
+            <p>Your Personal AI Assistant</p>
         </div>
+
+        <!-- Chat UI (Initially Hidden) -->
+        <div class="chat-container hidden" id="chat-container">
+            <div class="chat-header">Fix Mintra AI Assistant</div>
+            <div class="message-area" id="message-area">
+                <!-- Initial bot message will be added by script -->
+            </div>
+            <form class="chat-input-form" id="chat-form">
+                <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {{
+                const welcomeScreen = document.getElementById('welcome-screen');
+                const chatContainer = document.getElementById('chat-container');
+                const chatForm = document.getElementById('chat-form');
+                const userInput = document.getElementById('user-input');
+                const messageArea = document.getElementById('message-area');
+                
+                const sessionId = Date.now().toString() + Math.random().toString();
+
+                // --- Transition from Welcome to Chat ---
+                setTimeout(() => {{
+                    welcomeScreen.classList.add('hidden');
+                    chatContainer.classList.remove('hidden');
+                    addMessage('bot', "Hello! I'm the AI assistant for Fix Mintra , Welcome to Fix Mantra. How can I help you with your appliance or gadget repair today?"");
+                }}, 4000); // 4-second delay
+
+                // --- Chat Logic ---
+                chatForm.addEventListener('submit', async (event) => {{
+                    event.preventDefault();
+                    const userMessage = userInput.value.trim();
+                    if (!userMessage) return;
+
+                    addMessage('user', userMessage);
+                    userInput.value = '';
+                    showTypingIndicator();
+
+                    try {{
+                        const response = await fetch('/predict', {{
+                            method: 'POST',
+                            headers: {{ 'Content-Type': 'application/json' }},
+                            body: JSON.stringify({{ message: userMessage, session_id: sessionId }})
+                        }});
+                        
+                        const data = await response.json();
+                        const botReply = data.reply || "Sorry, I encountered an error.";
+                        
+                        hideTypingIndicator();
+                        addMessage('bot', botReply);
+
+                    }} catch (error) {{
+                        console.error('Error:', error);
+                        hideTypingIndicator();
+                        addMessage('bot', "I can't connect to my brain right now. Please try again later.");
+                    }}
+                }});
+
+                function addMessage(sender, text) {{
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('chat-message', sender === 'user' ? 'user-message' : 'bot-message');
+                    messageDiv.innerText = text;
+                    messageArea.appendChild(messageDiv);
+                    messageArea.scrollTop = messageArea.scrollHeight;
+                }}
+
+                function showTypingIndicator() {{
+                    const typingDiv = document.createElement('div');
+                    typingDiv.id = 'typing-indicator';
+                    typingDiv.classList.add('chat-message', 'typing-indicator');
+                    typingDiv.innerHTML = '<span></span><span></span><span></span>';
+                    messageArea.appendChild(typingDiv);
+                    messageArea.scrollTop = messageArea.scrollHeight;
+                }}
+
+                function hideTypingIndicator() {{
+                    const typingIndicator = document.getElementById('typing-indicator');
+                    if (typingIndicator) {{
+                        typingIndicator.remove();
+                    }}
+                }}
+            }});
+        </script>
     </body>
     </html>
     """
     return html_content
+
+
+# ... (your @app.route('/predict') and other functions follow here)
 
 
 @app.route("/predict", methods=["POST"])
