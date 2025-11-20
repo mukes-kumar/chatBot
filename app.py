@@ -325,7 +325,7 @@ def welcome():
                 setTimeout(() => {{
                     welcomeScreen.classList.add('hidden');
                     chatContainer.classList.remove('hidden');
-                    addMessage('bot', "Hello! I'm the AI assistant for Fix Mintra , Welcome to Fix Mantra. How can I help you with your appliance or gadget repair today?"");
+                    addMessage('bot', "Hello! I'm the AI assistant for Fix Mintra , Welcome to Fix Mantra. How can I help you with your appliance or gadget repair today?");
                 }}, 4000); // 4-second delay
 
                 // --- Chat Logic ---
